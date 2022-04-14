@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->foreign('task_id')->references('id')->on('tasks')->cascadeOnDelete();
             $table->enum('status', ['todo', 'done'])->nullable(false)->default('todo');
             $table->enum('priority', [1, 2, 3, 4, 5])->default(1);
-            $table->string('title')->nullable(false);
+            $table->string('title')->nullable(false)->fulltext();
             $table->string('description')->nullable();
             $table->timestamps();
         });

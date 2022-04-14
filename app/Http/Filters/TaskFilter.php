@@ -48,7 +48,7 @@ class TaskFilter extends QueryFilter
             return null;
         }
 
-        return $this->builder->where('title', 'like', '%' . $title . '%');
+        return $this->builder->where('title',$title);
     }
 
     /**

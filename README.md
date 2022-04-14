@@ -46,3 +46,15 @@
 >>>>><b>Task</b> - Create and Update validation requests
 >
 >><b>Traits</b> - Traits directory with APIResponse and Filter traits
+
+#### FILTER
+##### available params:
+>created_sort=desc\asc
+> 
+>status=todo\done
+> 
+>priority_sort=desc\asc
+> 
+>priority%5B%5D=1&priority%5B%5D=5
+> 
+>title={title}
