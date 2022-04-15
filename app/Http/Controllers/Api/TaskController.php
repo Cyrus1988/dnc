@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\Api\TaskAction;
+use App\Exceptions\TaskChildrenWrongStatusException;
 use App\Http\Controllers\Controller;
 use App\Http\Filters\TaskFilter;
 use App\Http\Requests\Api\Task\CreateRequest;
 use App\Http\Requests\Api\Task\UpdateRequest;
 use App\Models\Task;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -56,14 +59,28 @@ class TaskController extends Controller
         }
     }
 
+    public function chekc(Collection $collection)
+    {
+        foreach ($collection as $task) {
+            if ($task->status == 'todo') {
+                echo $task->id;
+                dd('error');
+            } else {
+                $this->chekc($task->childrenTasks);
+            }
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
      * @param UpdateRequest $request
      * @param int $id
+     * @param TaskAction $action
      * @return JsonResponse
+     * @throws TaskChildrenWrongStatusException
      */
-    public function update(UpdateRequest $request, int $id): JsonResponse
+    public function update(UpdateRequest $request, int $id, TaskAction $action): JsonResponse
     {
         $validate = $request->validated();
 
@@ -72,12 +89,10 @@ class TaskController extends Controller
             ->with('childrenTasks')
             ->first();
 
-        if ($task->childrenTasks->isEmpty()) {
-            return $this->sendError('Can`t update task where children`s task has status = `todo`', 406);
-        } else {
-            $task->update($validate);
-            return $this->sendResponse();
-        }
+        $action->checkChildrenTask($task->childrenTasks);
+
+        $task->update($validate);
+        return $this->sendResponse();
     }
 
     /**

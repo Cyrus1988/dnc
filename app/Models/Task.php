@@ -24,17 +24,8 @@ class Task extends Model
     /**
      * @return HasMany
      */
-    public function tasks(): HasMany
-    {
-        return $this->hasMany(Task::class);
-    }
-
-    /**
-     * @return HasMany
-     */
     public function childrenTasks(): HasMany
     {
-        return $this->hasMany(Task::class)
-            ->with('tasks');
+        return $this->hasMany(Task::class,'task_id')->with('childrenTasks');
     }
 }

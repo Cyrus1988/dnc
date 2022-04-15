@@ -35,6 +35,10 @@
 ```
 ###Project structure:
 ><b>app</b>
+>>><b>Actions</b> - Task action (logic)
+> 
+>>><b>Exceptions</b> - Here is our exception with wrong task-status
+> 
 >><b>Http</b>
 >>><b>TaskFilter</b> - filter class for our tasks
 >>
